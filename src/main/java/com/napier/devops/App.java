@@ -78,9 +78,21 @@ public class App
             Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
-                    "SELECT emp_no, first_name, last_name "
-                            + "FROM employees "
-                            + "WHERE emp_no = " + ID;
+                    "SELECT employees.emp_no, employees.first_name, employees.last_name, "
+                            + "titles.title, salaries.salary, departments.dept_name, "
+                            + "manager.first_name AS manager_first_name, manager.last_name AS manager_last_name "
+                            + "FROM employees, titles, salaries, dept_emp, departments, dept_manager, employees AS manager "
+                            + "WHERE employees.emp_no = titles.emp_no "
+                            + "AND employees.emp_no = salaries.emp_no "
+                            + "AND employees.emp_no = dept_emp.emp_no "
+                            + "AND dept_emp.dept_no = departments.dept_no "
+                            + "AND departments.dept_no = dept_manager.dept_no "
+                            + "AND dept_manager.emp_no = manager.emp_no "
+                            + "AND titles.to_date = '9999-01-01' "
+                            + "AND salaries.to_date = '9999-01-01' "
+                            + "AND dept_emp.to_date = '9999-01-01' "
+                            + "AND employees.emp_no = " + ID;
+
             // Execute SQL statement
             ResultSet rset = stmt.executeQuery(strSelect);
             // Return new employee if valid.
@@ -91,6 +103,10 @@ public class App
                 emp.emp_no = rset.getInt("emp_no");
                 emp.first_name = rset.getString("first_name");
                 emp.last_name = rset.getString("last_name");
+                emp.title = rset.getString("title");
+                emp.salary = rset.getInt("salary");
+                emp.dept_name = rset.getString("dept_name");
+                emp.manager = rset.getString("manager_first_name") + " " + rset.getString("manager_last_name");
                 return emp;
             }
             else
