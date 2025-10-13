@@ -5,7 +5,7 @@ FROM mysql/mysql-server:latest
 WORKDIR /tmp
 
 # Copy the main SQL file to initialise the DB automatically
-COPY db/world.sql /docker-entrypoint-initdb.d/world.sql
+COPY world.sql /docker-entrypoint-initdb.d
 
 # Set the root password
 ENV MYSQL_ROOT_PASSWORD=example
