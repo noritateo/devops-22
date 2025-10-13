@@ -1,5 +1,16 @@
-Hello! Welcome to Group 22!<br>
-![workflow](https://github.com/noritateo/devops-22/actions/workflows/main.yml/badge.svg)<br>
-[![LICENSE](https://img.shields.io/github/license/noritateo/devops-22.svg?style=flat-square)](https://github.com/noritateo/devops-22/blob/master/LICENSE)<br>
-[![Releases](https://img.shields.io/github/release/noritateo/devops-22/all.svg?style=flat-square)](https://github.com/noritateo/devops-22/releases)<br>
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=develop&style=flat-square)
+# SET09803: DevOps Coursework (Group 22)
+
+![Workflow](https://github.com/noritateo/devops-22/actions/workflows/main.yml/badge.svg)
+[![License](https://img.shields.io/github/license/noritateo/devops-22.svg?style=flat-square)](https://github.com/noritateo/devops-22/blob/master/LICENSE)
+
+![Build Status](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=develop&style=flat-square)
+[![Release](https://img.shields.io/github/release/noritateo/devops-22/all.svg?style=flat-square)](https://github.com/noritateo/devops-22/releases)
+
+## Project Overview
+
+* Code of Conduct
+* User Stories
+* Kanban Board
+* Sprint Board
+* Use Cases/Diagram
+* Product Backlog

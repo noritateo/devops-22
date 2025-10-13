@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.napier.sem</groupId>
-    <artifactId>devops-22</artifactId>
-    <version>0.1.0.3</version>
+    <artifactId>population-project</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>10</maven.compiler.source>
