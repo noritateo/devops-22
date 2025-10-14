@@ -5,14 +5,9 @@ import java.sql.*;
 public class App
 {
 
-    /**
-     * Connection to MySQL database.
-     */
     private Connection con = null;
 
-    /**
-     * Connect to the MySQL database.
-     */
+    // connect to mysql
     public void connect()
     {
         try
@@ -51,9 +46,7 @@ public class App
         }
     }
 
-    /**
-     * Disconnect from the MySQL database.
-     */
+    // disconnect from my sql
     public void disconnect()
     {
         if (con != null)
@@ -70,6 +63,7 @@ public class App
         }
     }
 
+    // get country details with code
     public Country getCountry(String code)
     {
         try
@@ -105,9 +99,7 @@ public class App
         }
     }
 
-    /**
-     * Displays a country’s information.
-     */
+    // display info from getCountry
     public void displayCountry(Country c)
     {
         if (c != null)

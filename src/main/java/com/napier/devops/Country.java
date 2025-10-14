@@ -1,6 +1,5 @@
 package com.napier.devops;
 
-
 public class Country
 {
     // Country code
@@ -9,7 +8,7 @@ public class Country
     // Country name
     public String name;
 
-    // Country continent
+    // Continent
     public String continent;
 
     // Region
@@ -18,6 +17,6 @@ public class Country
     // Population
     public int population;
 
-    // Capital city
+    // Capital city ID
     public int capital;
 }
