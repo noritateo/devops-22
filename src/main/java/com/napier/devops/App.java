@@ -1,6 +1,8 @@
 package com.napier.devops;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App
 {
@@ -12,7 +14,6 @@ public class App
     {
         try
         {
-            // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
         }
         catch (ClassNotFoundException e)
@@ -29,8 +30,11 @@ public class App
             {
                 // Wait a bit for db to start
                 Thread.sleep(30000);
-                // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
+                con = DriverManager.getConnection(
+                        "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
+                        "root",
+                        "example"
+                );
                 System.out.println("Successfully connected");
                 break;
             }
@@ -46,14 +50,13 @@ public class App
         }
     }
 
-    // disconnect from my sql
+    // disconnect from mysql
     public void disconnect()
     {
         if (con != null)
         {
             try
             {
-                // Close connection
                 con.close();
             }
             catch (Exception e)
@@ -63,18 +66,24 @@ public class App
         }
     }
 
-    // get country details with code
-    public Country getCountry(String code)
+    // get all countries details
+    public List<Country> getAllCountries()
     {
+        List<Country> countries = new ArrayList<>();
+
         try
         {
             Statement stmt = con.createStatement();
             String query =
-                    "SELECT Code, Name, Continent, Region, Population, Capital " +
-                            "FROM country WHERE Code = '" + code + "'";
+                    "SELECT country.Code, country.Name, country.Continent, country.Region, " +
+                            "country.Population, city.Name AS CapitalCity " +
+                            "FROM country " +
+                            "LEFT JOIN city ON country.Capital = city.ID " +
+                            "ORDER BY country.Population DESC";
+
             ResultSet rset = stmt.executeQuery(query);
 
-            if (rset.next())
+            while (rset.next())
             {
                 Country c = new Country();
                 c.code = rset.getString("Code");
@@ -82,54 +91,49 @@ public class App
                 c.continent = rset.getString("Continent");
                 c.region = rset.getString("Region");
                 c.population = rset.getInt("Population");
-                c.capital = rset.getInt("Capital");
-                return c;
-            }
-            else
-            {
-                System.out.println("No country found for code: " + code);
-                return null;
+                c.capitalCity = rset.getString("CapitalCity");
+                countries.add(c);
             }
         }
         catch (Exception e)
         {
             System.out.println("Failed to get country details");
             System.out.println(e.getMessage());
-            return null;
         }
+
+        return countries;
     }
 
-    // display info from getCountry
-    public void displayCountry(Country c)
+    // display info from getAllCountries
+    public void displayAllCountries(List<Country> countries)
     {
-        if (c != null)
+        if (countries == null || countries.isEmpty())
         {
-            System.out.println(
-                    "Code: " + c.code + "\n" +
-                            "Name: " + c.name + "\n" +
-                            "Continent: " + c.continent + "\n" +
-                            "Region: " + c.region + "\n" +
-                            "Population: " + c.population + "\n" +
-                            "Capital (ID): " + c.capital + "\n"
-            );
+            System.out.println("No countries found.");
+            return;
+        }
+
+        System.out.println(String.format(
+                "%-5s %-55s %-20s %-25s %-15s %-25s",
+                "Code", "Name", "Continent", "Region", "Population", "Capital City"));
+
+        for (Country c : countries)
+        {
+            String line = String.format(
+                    "%-5s %-55s %-20s %-25s %-15d %-25s",
+                    c.code, c.name, c.continent, c.region, c.population, c.capitalCity);
+            System.out.println(line);
         }
     }
 
     public static void main(String[] args)
     {
-        // Create new Application
         App a = new App();
-
-        // Connect to database
         a.connect();
 
-        // Get Country
-        Country c = a.getCountry("SGP");
+        List<Country> countries = a.getAllCountries();
+        a.displayAllCountries(countries);
 
-        // Display results
-        a.displayCountry(c);
-
-        // Disconnect from database
         a.disconnect();
     }
 }

@@ -18,5 +18,5 @@ public class Country
     public int population;
 
     // Capital city ID
-    public int capital;
+    public String capitalCity;
 }
