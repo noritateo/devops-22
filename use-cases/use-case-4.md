@@ -1,4 +1,4 @@
-# Use Case #4: Generate Population Report
+# Use Case #4: Generate Population Report on people living in cities vs not in cities
 
 ---
 
