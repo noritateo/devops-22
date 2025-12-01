@@ -294,6 +294,104 @@ public class App
         return cities;
     }
 
+    // Capital City World
+    public ArrayList<City> capitalCitiesWorld() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "ORDER BY ci.Population DESC;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
+    // Capital City Asia
+    public ArrayList<City> capitalCitiesAsia() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "       co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "WHERE co.Continent = 'Asia' " +
+                            "ORDER BY ci.Population DESC;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
+    // Capital City Region
+    public ArrayList<City> capitalCitiesCaribbean() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "       co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "WHERE co.Region = 'Caribbean' " +
+                            "ORDER BY ci.Population DESC;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
     // display info from getAllCountries
     public void displayAllCountries(List<Country> countries)
     {
@@ -322,6 +420,7 @@ public class App
         Display display = new Display();
         a.connect();
 
+        // Cities
         display.displayAllCities(a.top10populatedCities());
         System.out.println();
         display.displayAllCities(a.top10populatedCitiesAsia());
@@ -331,6 +430,15 @@ public class App
         display.displayAllCities(a.top10populatedCitiesMyanmar());
         System.out.println();
         display.displayAllCities(a.top10populatedCitiesQueensland());
+        System.out.println();
+
+        // Capital Cities
+        display.displayAllCities(a.capitalCitiesWorld());
+        System.out.println();
+        display.displayAllCities(a.capitalCitiesAsia());
+        System.out.println();
+        display.displayAllCities(a.capitalCitiesCaribbean());
+        System.out.println();
 
         List<Country> countries = a.getAllCountries();
         a.displayAllCountries(countries);
