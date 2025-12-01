@@ -30,7 +30,7 @@ public class App
             try
             {
                 // Wait a bit for db to start
-                Thread.sleep(5000);
+                Thread.sleep(30000);
                 con = DriverManager.getConnection(
                         "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root",
@@ -392,6 +392,106 @@ public class App
         return captialCities;
     }
 
+    // Top 10 Capital Cities World
+    public ArrayList<City> top10CapitalCitiesWorld() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "       co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "ORDER BY ci.Population DESC " +
+                            "LIMIT 10;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
+    // Top 10 Capital City Continent
+    public ArrayList<City> top10capitalCitiesAsia() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "       co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "WHERE co.Region = 'Caribbean' " +
+                            "ORDER BY ci.Population DESC " +
+                            "LIMIT 10;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
+    // Top 10 Capital City Region
+    public ArrayList<City> top10CapitalCitiesCaribbean() {
+        ArrayList<City> captialCities = new ArrayList<City>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql =
+                    "SELECT ci.Name AS CityName, co.Name AS CountryName, ci.District, " +
+                            "       co.Region, co.Continent, ci.Population " +
+                            "FROM city ci " +
+                            "JOIN country co ON ci.ID = co.Capital " +
+                            "WHERE co.Region = 'Caribbean' " +
+                            "ORDER BY ci.Population DESC;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                City capitalCity = new City(
+                        resultSet.getString("CityName"),
+                        resultSet.getString("CountryName"),
+                        resultSet.getString("District"),
+                        resultSet.getString("Region"),
+                        resultSet.getString("Continent"),
+                        resultSet.getInt("Population")
+                );
+                captialCities.add(capitalCity);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return captialCities;
+    }
+
     // display info from getAllCountries
     public void displayAllCountries(List<Country> countries)
     {
@@ -439,6 +539,13 @@ public class App
         System.out.println();
         display.displayAllCities(a.capitalCitiesCaribbean());
         System.out.println();
+
+        // Top Capital Cities
+        display.displayAllCities(a.top10CapitalCitiesWorld());
+        System.out.println();
+        display.displayAllCities(a.top10capitalCitiesAsia());
+        System.out.println();
+        display.displayAllCities(a.top10CapitalCitiesCaribbean());
 
         List<Country> countries = a.getAllCountries();
         a.displayAllCountries(countries);
