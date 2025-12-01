@@ -22,4 +22,24 @@ public class Display {
             System.out.print(line);
         }
     }
+
+    public void displayAllPeoplePopulation(ArrayList<PeoplePopulation> peoplePopulation) {
+        if (peoplePopulation == null || peoplePopulation.isEmpty()) {
+            System.out.println("No people population found.");
+            return;
+        }
+
+        System.out.print(String.format(
+                "%-40s %-20s%n",
+                "Name", "Total Population"
+        ));
+
+        for (PeoplePopulation people : peoplePopulation) {
+            String line = String.format(
+                    "%-40s %-20d%n",
+                    people.getLevel(), people.getTotalPopulation()
+            );
+            System.out.print(line);
+        }
+    }
 }

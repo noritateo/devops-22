@@ -492,6 +492,110 @@ public class App
         return captialCities;
     }
 
+    // World Population
+    public ArrayList<PeoplePopulation> worldPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql = "SELECT SUM(Population) AS WorldPopulation FROM country;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            if (resultSet.next()) {
+                long total = resultSet.getLong("WorldPopulation");
+                PeoplePopulation peoplePopulation = new PeoplePopulation("World", total);
+                population.add(peoplePopulation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return population;
+    }
+
+    // Asian Continent Population
+    public ArrayList<PeoplePopulation> asiaPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT Continent, SUM(Population) AS TotalPopulation " +
+                    "FROM country " +
+                    "WHERE Continent = 'Asia' " +
+                    "GROUP BY Continent;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String continentName = resultSet.getString("Continent");
+                long totalPopulation = resultSet.getLong("TotalPopulation");
+
+                PeoplePopulation peoplePopulation = new PeoplePopulation(continentName, totalPopulation);
+                population.add(peoplePopulation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return population;
+    }
+
+    // Caribbean Region Population
+    public ArrayList<PeoplePopulation> regionPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT Region, SUM(Population) AS TotalPopulation " +
+                    "FROM country " +
+                    "WHERE Region = 'Caribbean' " +
+                    "GROUP BY Region;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String regionName = resultSet.getString("Region");
+                long totalPopulation = resultSet.getLong("TotalPopulation");
+
+                PeoplePopulation peoplePopulation = new PeoplePopulation(regionName, totalPopulation);
+                population.add(peoplePopulation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return population;
+    }
+
+    // Myanmar Country Population
+    public ArrayList<PeoplePopulation> countryPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT Name AS CountryName, Population AS TotalPopulation " +
+                    "FROM country " +
+                    "WHERE Name = 'Myanmar';";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            // Process each record
+            while (resultSet.next()) {
+                String countryName = resultSet.getString("CountryName");
+                long totalPopulation = resultSet.getLong("TotalPopulation");
+                PeoplePopulation peoplePopulation = new PeoplePopulation(countryName, totalPopulation);
+                population.add(peoplePopulation);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return population;
+    }
+
     // display info from getAllCountries
     public void displayAllCountries(List<Country> countries)
     {
@@ -546,6 +650,16 @@ public class App
         display.displayAllCities(a.top10capitalCitiesAsia());
         System.out.println();
         display.displayAllCities(a.top10CapitalCitiesCaribbean());
+        System.out.println();
+
+        display.displayAllPeoplePopulation(a.worldPopulation());
+        System.out.println();
+        display.displayAllPeoplePopulation(a.asiaPopulation());
+        System.out.println();
+        display.displayAllPeoplePopulation(a.regionPopulation());
+        System.out.println();
+        display.displayAllPeoplePopulation(a.countryPopulation());
+        System.out.println();
 
         List<Country> countries = a.getAllCountries();
         a.displayAllCountries(countries);
