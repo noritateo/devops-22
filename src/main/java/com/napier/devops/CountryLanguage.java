@@ -1,16 +1,30 @@
 package com.napier.devops;
 
-public class CountryLanguage
-{
-    // Country code
-    public String countryCode;
+/**
+ * Represents a language spoken in a country.
+ * Maps to the CountryLanguage table in the database.
+ */
+public class CountryLanguage {
 
-    // Language name
-    public String language;
+    private String language;
+    private double percentage;
+    private double world_percentage;
 
-    // Whether this language is official
-    public boolean isOfficial;
+    public CountryLanguage(String language,double percentage, double world_percentage) {
+        this.language = language;
+        this.percentage = percentage;
+        this.world_percentage = world_percentage;
+    }
 
-    // Percentage of speakers
-    public float percentage;
+    public String getLanguage() {
+        return language;
+    }
+
+    public double getPercentage() {
+        return percentage;
+    }
+
+    public double getWorld_percentage() {
+        return world_percentage;
+    }
 }
