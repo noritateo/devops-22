@@ -42,4 +42,26 @@ public class Display {
             System.out.print(line);
         }
     }
+
+    public void displaylanguages(ArrayList<CountryLanguage> countryLanguages) {
+        if (countryLanguages == null || countryLanguages.isEmpty()) {
+            System.out.println("No people population found.");
+            return;
+        }
+
+        System.out.print(String.format(
+                "%-10s %-20s %-5s%n",
+                "Language", "Total Speakers", "World Percentage"
+        ));
+
+        for (CountryLanguage language : countryLanguages) {
+            String line = String.format(
+                    "%-10s %, -20.0f %-5.2f%%%n",
+                    language.getLanguage(),
+                    language.getPercentage(),
+                    language.getWorld_percentage()
+            );
+            System.out.print(line);
+        }
+    }
 }

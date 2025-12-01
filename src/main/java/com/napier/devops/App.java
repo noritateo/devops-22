@@ -675,6 +675,45 @@ public class App
         }
     }
 
+    public ArrayList<CountryLanguage> getWorldLanguageReport() {
+        ArrayList<CountryLanguage> languages = new ArrayList<>();
+
+        if (con == null) {
+            return languages;
+        }
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT " +
+                    "cl.Language AS language, " +
+                    "ROUND(SUM(ROUND(c.Population * (cl.Percentage / 100))), 0) AS totalSpeakers, " +
+                    "ROUND(SUM(ROUND(c.Population * (cl.Percentage / 100))) / " +
+                    "(SELECT SUM(Population) FROM country) * 100, 2) AS worldPercentage " +
+                    "FROM countrylanguage cl " +
+                    "JOIN country c ON cl.CountryCode = c.Code " +
+                    "WHERE cl.Language IN ('Chinese', 'English', 'Hindi', 'Spanish', 'Arabic') " +
+                    "GROUP BY cl.Language " +
+                    "ORDER BY totalSpeakers DESC";
+            ResultSet rset = stmt.executeQuery(sql);
+
+            while (rset.next()) {
+                CountryLanguage cl = new CountryLanguage(
+                        rset.getString("language"),
+                        rset.getDouble("totalSpeakers"),
+                        rset.getDouble("worldPercentage")
+                );
+
+                languages.add(cl);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // Return the list of languages with calculated statistics
+        return languages;
+    }
+
     public static void main(String[] args)
     {
         App a = new App();
@@ -721,6 +760,8 @@ public class App
         System.out.println();
         display.displayAllPeoplePopulation(a.cityPopulation());
         System.out.println();
+
+        display.displaylanguages(a.getWorldLanguageReport());
 
         List<Country> countries = a.getAllCountries();
         a.displayAllCountries(countries);
