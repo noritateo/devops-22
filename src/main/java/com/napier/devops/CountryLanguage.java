@@ -2,7 +2,7 @@ package com.napier.devops;
 
 public class CountryLanguage
 {
-    // Existing fields
+    // Existing field
     public String countryCode;
     public String language;
     public boolean isOfficial;
