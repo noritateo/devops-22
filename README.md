@@ -31,13 +31,10 @@
 
 ## Code Coverage (Codecov)
 
-(Add these after your first successful Codecov upload)
-
 ### master Branch
-[![codecov](https://codecov.io/gh/noritateo/devops-22/branch/master/graph/badge.svg)](https://codecov.io/gh/noritateo/devops-22)
-
+[![codecov](https://codecov.io/github/noritateo/devops-22/branch/master/graph/badge.svg?token=B1Z2U9KM6X)](https://codecov.io/github/noritateo/devops-22)
 ### develop Branch
-[![codecov](https://codecov.io/gh/noritateo/devops-22/branch/develop/graph/badge.svg)](https://codecov.io/gh/noritateo/devops-22)
+[![codecov](https://codecov.io/github/noritateo/devops-22/branch/develop/graph/badge.svg?token=B1Z2U9KM6X)](https://codecov.io/github/noritateo/devops-22)
 
 ---
 
