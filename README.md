@@ -1,24 +1,54 @@
 # SET09803: DevOps Coursework (Group 22)
 
-![Workflow](https://github.com/noritateo/devops-22/actions/workflows/main.yml/badge.svg)
+## CI/CD & Project Badges
+
+### Main Workflow
+![Main Workflow](https://github.com/noritateo/devops-22/actions/workflows/main.yml/badge.svg)
+
+### License
 [![License](https://img.shields.io/github/license/noritateo/devops-22.svg?style=flat-square)](https://github.com/noritateo/devops-22/blob/master/LICENSE)
-![Build Status](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=develop&style=flat-square)
+
+### Latest Release
 [![Release](https://img.shields.io/github/release/noritateo/devops-22/all.svg?style=flat-square)](https://github.com/noritateo/devops-22/releases)
-
-### Build status for master
-![GitHub branch status](https://img.shields.io/github/checks-status/noritateo/devops-22/master)
-
-### Build status for develop
-![GitHub branch status](https://img.shields.io/github/checks-status/noritateo/devops-22/develop)
 
 ---
 
+## Build Status by Branch
+
+### master Branch
+- Build Status  
+  ![Master Build](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=master&style=flat-square)
+- Checks Status  
+  ![Master Checks](https://img.shields.io/github/checks-status/noritateo/devops-22/master)
+
+### develop Branch
+- Build Status  
+  ![Develop Build](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=develop&style=flat-square)
+- Checks Status  
+  ![Develop Checks](https://img.shields.io/github/checks-status/noritateo/devops-22/develop)
+
+---
+
+## Code Coverage (Codecov)
+
+(Add these after your first successful Codecov upload)
+
+### master Branch
+[![codecov](https://codecov.io/gh/noritateo/devops-22/branch/master/graph/badge.svg)](https://codecov.io/gh/noritateo/devops-22)
+
+### develop Branch
+[![codecov](https://codecov.io/gh/noritateo/devops-22/branch/develop/graph/badge.svg)](https://codecov.io/gh/noritateo/devops-22)
+
+---
 
 ## Database Schema
 
-Sample data "world.sql" contains 3 tables: `country`, `city`, and `countrylanguage`.
+The sample `world.sql` dataset contains the following tables:
+
+- country
+- city
+- countrylanguage
+
+### ERD Diagram
 
 ![ERD Diagram](imgs/db_structure.png)
-
-
-
