@@ -10,7 +10,7 @@ public class App
     private Connection con = null;
     private Display display = new Display();
 
-    // Default connect method for Docker (calls the parameterized one)
+    // Default connect method for the Docker (calls the parameterized one)
     public void connect()
     {
         connect("db:3306", 30000);
