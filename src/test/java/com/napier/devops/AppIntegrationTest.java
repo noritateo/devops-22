@@ -27,8 +27,8 @@ public class AppIntegrationTest
         assertEquals(10, cities.size(), "Should return top 10 cities");
     }
 
-    // Changed from @Test to @AfterAll
-    // This ensures it runs LAST, only after all other tests are done.
+    // FIX: Changed from @Test to @AfterAll
+    // This ensures it runs LAST, preventing "No operations allowed after connection closed"
     @AfterAll
     static void tearDown()
     {

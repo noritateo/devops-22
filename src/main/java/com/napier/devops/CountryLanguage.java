@@ -2,15 +2,24 @@ package com.napier.devops;
 
 public class CountryLanguage
 {
-    // Country code
+    // Existing fields
     public String countryCode;
-
-    // Language name
     public String language;
-
-    // Whether this language is official
     public boolean isOfficial;
+    public float percentage; // % inside a specific country
 
-    // Percentage of speakers
-    public float percentage;
+    // NEW FIELDS (Required for the Language Report)
+    public long population;          // Total speakers
+    public double worldPercentage;   // % of world population
+
+    // Default Constructor (Required for Unit Tests)
+    public CountryLanguage() {
+    }
+
+    // Constructor for the Language Report (Required for App.java)
+    public CountryLanguage(String language, double population, double worldPercentage) {
+        this.language = language;
+        this.population = (long) population;
+        this.worldPercentage = worldPercentage;
+    }
 }
