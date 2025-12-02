@@ -11,45 +11,37 @@ public class App
     private Display display = new Display();
 
     // connect to mysql
-    public void connect()
-    {
-        try
-        {
+    public void connect(String location, int delay) {
+        try {
+            // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             System.out.println("Could not load SQL driver");
             System.exit(-1);
         }
 
         int retries = 10;
-        for (int i = 0; i < retries; ++i)
-        {
+        for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database...");
-            try
-            {
+            try {
                 // Wait a bit for db to start
-                Thread.sleep(30000);
+                Thread.sleep(delay);
+                // Connect to database
                 con = DriverManager.getConnection(
-                        "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
+                        "jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root",
-                        "example"
-                );
+                        "example");
                 System.out.println("Successfully connected");
                 break;
-            }
-            catch (SQLException sqle)
-            {
+            } catch (SQLException sqle) {
                 System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
-            }
-            catch (InterruptedException ie)
-            {
+            } catch (InterruptedException ie) {
                 System.out.println("Thread interrupted? Should not happen.");
             }
         }
     }
+
 
     // disconnect from mysql
     public void disconnect()
@@ -718,7 +710,17 @@ public class App
     {
         App a = new App();
         Display display = new Display();
-        a.connect();
+
+        // If no arguments, default to local debugging on 33060
+        if (args.length < 2) {
+            a.connect("localhost:33060", 30000);
+        } else {
+            a.connect(args[0], Integer.parseInt(args[1]));
+        }
+
+        // Countries
+        List<Country> countries = a.getAllCountries();
+        a.displayAllCountries(countries);
 
         // Cities
         display.displayAllCities(a.top10populatedCities());
@@ -762,9 +764,6 @@ public class App
         System.out.println();
 
         display.displaylanguages(a.getWorldLanguageReport());
-
-        List<Country> countries = a.getAllCountries();
-        a.displayAllCountries(countries);
 
         a.disconnect();
     }
