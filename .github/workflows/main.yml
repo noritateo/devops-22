@@ -62,10 +62,10 @@ jobs:
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./target/site/jacoco
           flags: IntegrationTests
           verbose: true
-
 
   build:
     name: Build and Run Using docker-compose
