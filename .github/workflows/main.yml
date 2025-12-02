@@ -46,7 +46,6 @@ jobs:
         run: |
           docker build -t database ./db
           docker run --name worlddb -dp 33060:3306 database
-          # Wait for MySQL to fully start
           sleep 25
 
       - name: Run Integration Tests (with Coverage)
@@ -90,13 +89,13 @@ jobs:
         run: |
           echo "Checking for JAR files..."
           ls -la target/
-          test -f target/devops-jar-with-dependencies.jar || exit 1
+          test -f target/population-project-*-jar-with-dependencies.jar || exit 1
 
       - name: Build and Run App with Docker Compose
         run: |
-          docker-compose build
-          docker-compose up --abort-on-container-exit
+          docker compose build
+          docker compose up --abort-on-container-exit
 
       - name: Stop and Remove Containers
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v

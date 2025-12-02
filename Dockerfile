@@ -1,4 +1,4 @@
 FROM amazoncorretto:17
-COPY ./target/devops.jar /tmp
+COPY ./target/population-project-*-jar-with-dependencies.jar /tmp/app.jar
 WORKDIR /tmp
-ENTRYPOINT ["java", "-jar", "devops.jar", "db:3306", "30000"]
+ENTRYPOINT ["java", "-jar", "app.jar", "db:3306", "30000"]
