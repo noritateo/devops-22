@@ -5,6 +5,12 @@
 ![Build Status](https://img.shields.io/github/actions/workflow/status/noritateo/devops-22/main.yml?branch=develop&style=flat-square)
 [![Release](https://img.shields.io/github/release/noritateo/devops-22/all.svg?style=flat-square)](https://github.com/noritateo/devops-22/releases)
 
+### Build status for master
+![GitHub branch status](https://img.shields.io/github/checks-status/noritateo/devops-22/master)
+
+### Build status for develop
+![GitHub branch status](https://img.shields.io/github/checks-status/noritateo/devops-22/develop)
+
 ---
 
 
