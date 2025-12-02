@@ -10,8 +10,14 @@ public class App
     private Connection con = null;
     private Display display = new Display();
 
-    // connect to mysql
+    // Default connect method for Docker (calls the parameterized one)
     public void connect()
+    {
+        connect("db:3306", 30000);
+    }
+
+    // Parameterized connect method for Testing (allows localhost)
+    public void connect(String location, int delay)
     {
         try
         {
@@ -30,9 +36,10 @@ public class App
             try
             {
                 // Wait a bit for db to start
-                Thread.sleep(30000);
+                Thread.sleep(delay);
+                // Connect to database using the location parameter
                 con = DriverManager.getConnection(
-                        "jdbc:mysql://db:3306/world?allowPublicKeyRetrieval=true&useSSL=false",
+                        "jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root",
                         "example"
                 );
