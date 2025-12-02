@@ -21,7 +21,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Run Unit Tests
-        run: mvn -Dtest=com.napier.devops.MyTest test
+        run: mvn -Dtest=com.napier.devops.AppTest test
 
       - name: Package Application
         run: mvn package -DskipTests
