@@ -603,6 +603,63 @@ public class App
         return population;
     }
 
+    // Queensland District Population
+    public ArrayList<PeoplePopulation> distinctPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT ci.District AS District, " +
+                    "SUM(ci.Population) AS totalPopulation " +
+                    "FROM city ci " +
+                    "WHERE ci.District = 'Queensland' " +
+                    "GROUP BY ci.CountryCode, ci.District " +
+                    "ORDER BY ci.CountryCode, ci.District;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String districtName = resultSet.getString("District");
+                long totalPopulation = resultSet.getLong("totalPopulation");
+                PeoplePopulation peoplePopulation = new PeoplePopulation(districtName, totalPopulation);
+                population.add(peoplePopulation);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return population;
+    }
+
+    // Yangon City Population
+    public ArrayList<PeoplePopulation> cityPopulation() {
+        ArrayList<PeoplePopulation> population = new ArrayList<>();
+
+        try {
+            Statement stmt = con.createStatement();
+
+            String sql = "SELECT ci.Name AS CityName, " +
+                    "SUM(ci.Population) AS totalPopulation " +
+                    "FROM city ci " +
+                    "WHERE ci.Name = 'Yangon' " +
+                    "GROUP BY ci.Name;";
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            while (resultSet.next()) {
+                String cityName = resultSet.getString("CityName");
+                long totalPopulation = resultSet.getLong("totalPopulation");
+                PeoplePopulation peoplePopulation = new PeoplePopulation(cityName, totalPopulation);
+                population.add(peoplePopulation);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return population;
+    }
+
     // display info from getAllCountries
     public void displayAllCountries(List<Country> countries)
     {
@@ -666,6 +723,10 @@ public class App
         display.displayAllPeoplePopulation(a.regionPopulation());
         System.out.println();
         display.displayAllPeoplePopulation(a.countryPopulation());
+        System.out.println();
+        display.displayAllPeoplePopulation(a.distinctPopulation());
+        System.out.println();
+        display.displayAllPeoplePopulation(a.cityPopulation());
         System.out.println();
 
         List<Country> countries = a.getAllCountries();
