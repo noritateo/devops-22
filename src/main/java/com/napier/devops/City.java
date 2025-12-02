@@ -1,7 +1,8 @@
 package com.napier.devops;
 
 public class City {
-
+    public City() {
+    }
     // City name
     public String name;
 

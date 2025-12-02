@@ -10,38 +10,53 @@ public class App
     private Connection con = null;
     private Display display = new Display();
 
-    // connect to mysql
-    public void connect(String location, int delay) {
-        try {
-            // Load Database driver
+    // Default connect method for Docker (calls the parameterized one)
+    public void connect()
+    {
+        connect("db:3306", 30000);
+    }
+
+    // Parameterized connect method for Testing (allows localhost)
+    public void connect(String location, int delay)
+    {
+        try
+        {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e)
+        {
             System.out.println("Could not load SQL driver");
             System.exit(-1);
         }
 
         int retries = 10;
-        for (int i = 0; i < retries; ++i) {
+        for (int i = 0; i < retries; ++i)
+        {
             System.out.println("Connecting to database...");
-            try {
+            try
+            {
                 // Wait a bit for db to start
                 Thread.sleep(delay);
-                // Connect to database
+                // Connect to database using the location parameter
                 con = DriverManager.getConnection(
                         "jdbc:mysql://" + location + "/world?allowPublicKeyRetrieval=true&useSSL=false",
                         "root",
-                        "example");
+                        "example"
+                );
                 System.out.println("Successfully connected");
                 break;
-            } catch (SQLException sqle) {
+            }
+            catch (SQLException sqle)
+            {
                 System.out.println("Failed to connect to database attempt " + i);
                 System.out.println(sqle.getMessage());
-            } catch (InterruptedException ie) {
+            }
+            catch (InterruptedException ie)
+            {
                 System.out.println("Thread interrupted? Should not happen.");
             }
         }
     }
-
 
     // disconnect from mysql
     public void disconnect()
@@ -588,63 +603,6 @@ public class App
         return population;
     }
 
-    // Queensland District Population
-    public ArrayList<PeoplePopulation> distinctPopulation() {
-        ArrayList<PeoplePopulation> population = new ArrayList<>();
-
-        try {
-            Statement stmt = con.createStatement();
-
-            String sql = "SELECT ci.District AS District, " +
-                    "SUM(ci.Population) AS totalPopulation " +
-                    "FROM city ci " +
-                    "WHERE ci.District = 'Queensland' " +
-                    "GROUP BY ci.CountryCode, ci.District " +
-                    "ORDER BY ci.CountryCode, ci.District;";
-
-            ResultSet resultSet = stmt.executeQuery(sql);
-
-            while (resultSet.next()) {
-                String districtName = resultSet.getString("District");
-                long totalPopulation = resultSet.getLong("totalPopulation");
-                PeoplePopulation peoplePopulation = new PeoplePopulation(districtName, totalPopulation);
-                population.add(peoplePopulation);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return population;
-    }
-
-    // Yangon City Population
-    public ArrayList<PeoplePopulation> cityPopulation() {
-        ArrayList<PeoplePopulation> population = new ArrayList<>();
-
-        try {
-            Statement stmt = con.createStatement();
-
-            String sql = "SELECT ci.Name AS CityName, " +
-                    "SUM(ci.Population) AS totalPopulation " +
-                    "FROM city ci " +
-                    "WHERE ci.Name = 'Yangon' " +
-                    "GROUP BY ci.Name;";
-
-            ResultSet resultSet = stmt.executeQuery(sql);
-
-            while (resultSet.next()) {
-                String cityName = resultSet.getString("CityName");
-                long totalPopulation = resultSet.getLong("totalPopulation");
-                PeoplePopulation peoplePopulation = new PeoplePopulation(cityName, totalPopulation);
-                population.add(peoplePopulation);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return population;
-    }
-
     // display info from getAllCountries
     public void displayAllCountries(List<Country> countries)
     {
@@ -667,60 +625,11 @@ public class App
         }
     }
 
-    public ArrayList<CountryLanguage> getWorldLanguageReport() {
-        ArrayList<CountryLanguage> languages = new ArrayList<>();
-
-        if (con == null) {
-            return languages;
-        }
-
-        try {
-            Statement stmt = con.createStatement();
-
-            String sql = "SELECT " +
-                    "cl.Language AS language, " +
-                    "ROUND(SUM(ROUND(c.Population * (cl.Percentage / 100))), 0) AS totalSpeakers, " +
-                    "ROUND(SUM(ROUND(c.Population * (cl.Percentage / 100))) / " +
-                    "(SELECT SUM(Population) FROM country) * 100, 2) AS worldPercentage " +
-                    "FROM countrylanguage cl " +
-                    "JOIN country c ON cl.CountryCode = c.Code " +
-                    "WHERE cl.Language IN ('Chinese', 'English', 'Hindi', 'Spanish', 'Arabic') " +
-                    "GROUP BY cl.Language " +
-                    "ORDER BY totalSpeakers DESC";
-            ResultSet rset = stmt.executeQuery(sql);
-
-            while (rset.next()) {
-                CountryLanguage cl = new CountryLanguage(
-                        rset.getString("language"),
-                        rset.getDouble("totalSpeakers"),
-                        rset.getDouble("worldPercentage")
-                );
-
-                languages.add(cl);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        // Return the list of languages with calculated statistics
-        return languages;
-    }
-
     public static void main(String[] args)
     {
         App a = new App();
         Display display = new Display();
-
-        // If no arguments, default to local debugging on 33060
-        if (args.length < 2) {
-            a.connect("localhost:33060", 30000);
-        } else {
-            a.connect(args[0], Integer.parseInt(args[1]));
-        }
-
-        // Countries
-        List<Country> countries = a.getAllCountries();
-        a.displayAllCountries(countries);
+        a.connect();
 
         // Cities
         display.displayAllCities(a.top10populatedCities());
@@ -758,12 +667,9 @@ public class App
         System.out.println();
         display.displayAllPeoplePopulation(a.countryPopulation());
         System.out.println();
-        display.displayAllPeoplePopulation(a.distinctPopulation());
-        System.out.println();
-        display.displayAllPeoplePopulation(a.cityPopulation());
-        System.out.println();
 
-        display.displaylanguages(a.getWorldLanguageReport());
+        List<Country> countries = a.getAllCountries();
+        a.displayAllCountries(countries);
 
         a.disconnect();
     }
