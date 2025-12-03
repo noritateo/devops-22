@@ -13,7 +13,7 @@ public class App
     // Default connect method for the Docker (calls  parameterized one)
     public void connect()
     {
-        connect("db:3306", 30000);
+        connect("db:33060", 30000);
     }
 
     // Parameterized connect method for Testing (allows localhost)
@@ -625,11 +625,17 @@ public class App
         }
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         App a = new App();
         Display display = new Display();
-        a.connect();
+
+        // Connect to database
+        // If no arguments provided, assume running locally in IntelliJ
+        if (args.length < 1) {
+            a.connect("localhost:33060", 30000);  // ← FIX: Changed from a.connect()
+        } else {
+            a.connect(args[0], Integer.parseInt(args[1]));
+        }
 
         // Cities
         display.displayAllCities(a.top10populatedCities());
@@ -659,6 +665,7 @@ public class App
         display.displayAllCities(a.top10CapitalCitiesCaribbean());
         System.out.println();
 
+        // Population
         display.displayAllPeoplePopulation(a.worldPopulation());
         System.out.println();
         display.displayAllPeoplePopulation(a.asiaPopulation());
@@ -668,9 +675,11 @@ public class App
         display.displayAllPeoplePopulation(a.countryPopulation());
         System.out.println();
 
+        // Countries
         List<Country> countries = a.getAllCountries();
         a.displayAllCountries(countries);
 
+        // Disconnect
         a.disconnect();
     }
 }
