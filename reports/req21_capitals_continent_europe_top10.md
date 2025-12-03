@@ -1,0 +1,12 @@
+| Name | Country | Population |
+| --- | --- | --- |
+| Moscow | null | 8389200 |
+| London | null | 7285000 |
+| Berlin | null | 3386667 |
+| Madrid | null | 2879052 |
+| Roma | null | 2643581 |
+| Kyiv | null | 2624000 |
+| Paris | null | 2125246 |
+| Bucuresti | null | 2016131 |
+| Budapest | null | 1811552 |
+| Minsk | null | 1674000 |
